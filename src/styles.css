@@ -101,8 +101,8 @@ img {
 }
 
 .bordered {
-  border-left: 1px solid var(--grid);
-  border-right: 1px solid var(--grid);
+  border-left: 1px solid var(--grid-strong);
+  border-right: 1px solid var(--grid-strong);
 }
 
 .site-header {
@@ -247,7 +247,7 @@ main {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.72fr) minmax(230px, 0.78fr);
+  grid-template-columns: minmax(0, 1.62fr) minmax(310px, 0.88fr);
   min-height: min(890px, calc(100vh - var(--header-height)));
   overflow: hidden;
   position: relative;
@@ -294,26 +294,30 @@ main {
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 96px 96px;
-  border-left: 1px solid var(--grid);
+  background-size: 104px 104px;
+  border-left: 1px solid var(--grid-strong);
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   justify-content: flex-end;
   min-height: 100%;
   opacity: 1;
-  padding: clamp(24px, 3vw, 46px);
+  padding: clamp(30px, 3.2vw, 52px);
   position: relative;
 }
 
 .technical-rail {
   background: var(--paper);
   border: 1px solid var(--grid-strong);
-  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 124px;
+  padding: 25px 28px;
 }
 
 .technical-rail-middle {
-  margin-left: clamp(0px, 2.5vw, 36px);
+  margin-left: clamp(0px, 1.8vw, 28px);
 }
 
 .technical-rail span,
@@ -321,34 +325,35 @@ main {
   color: var(--ochre);
   display: block;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.55rem;
+  font-size: 0.62rem;
   letter-spacing: 0.08em;
-  margin-bottom: 9px;
+  margin-bottom: 12px;
   text-transform: uppercase;
 }
 
 .technical-rail strong {
   display: block;
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1rem, 1.45vw, 1.35rem);
+  font-size: clamp(1.35rem, 1.8vw, 1.85rem);
   letter-spacing: -0.035em;
-  line-height: 1.15;
+  line-height: 1.08;
 }
 
 .technical-rail-note {
   background: var(--forest);
   color: var(--paper);
-  padding: 22px;
+  min-height: 190px;
+  padding: 30px;
 }
 
 .technical-rail-note p {
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  font-size: clamp(1.4rem, 1.9vw, 1.85rem);
   font-weight: 600;
   letter-spacing: -0.035em;
   line-height: 1.2;
-  margin: 0 0 28px;
-  max-width: 220px;
+  margin: 0 0 38px;
+  max-width: 290px;
 }
 
 .technical-rail-note svg {
@@ -524,21 +529,11 @@ main {
   width: 8px;
 }
 
-.screenshot-gallery {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.screenshot-gallery figure {
+.project-artwork {
   margin: 0;
 }
 
-.screenshot-main {
-  grid-column: 1 / -1;
-}
-
-.screenshot-button {
+.project-artwork-button {
   background: var(--white);
   border: 1px solid var(--grid-strong);
   cursor: zoom-in;
@@ -549,16 +544,17 @@ main {
   width: 100%;
 }
 
-.screenshot-button img {
+.project-artwork-button img {
   aspect-ratio: 16 / 9;
+  filter: grayscale(1) contrast(1.08);
   object-fit: cover;
-  object-position: top left;
+  object-position: center;
   transition: transform 220ms ease;
   width: 100%;
 }
 
-.screenshot-button:hover img {
-  transform: scale(1.012);
+.project-artwork-button:hover img {
+  transform: scale(1.018);
 }
 
 .zoom-label {
@@ -580,25 +576,10 @@ main {
     transform 160ms ease;
 }
 
-.screenshot-button:hover .zoom-label,
-.screenshot-button:focus-visible .zoom-label {
+.project-artwork-button:hover .zoom-label,
+.project-artwork-button:focus-visible .zoom-label {
   opacity: 1;
   transform: translateY(0);
-}
-
-.screenshot-gallery figcaption {
-  display: flex;
-  font-size: 0.68rem;
-  gap: 9px;
-  line-height: 1.4;
-  padding-top: 8px;
-}
-
-.screenshot-gallery figcaption span {
-  color: var(--ochre);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
 }
 
 .project-copy {
@@ -773,8 +754,7 @@ main {
 }
 
 .education-row h3,
-.training-grid h3,
-.community h3 {
+.training-grid h3 {
   font-family: "Space Grotesk", sans-serif;
   letter-spacing: -0.035em;
   margin: 0;
@@ -872,44 +852,6 @@ main {
   margin-top: 5px;
 }
 
-.community {
-  border-top: 1px solid var(--grid);
-  margin-top: 84px;
-  padding-top: 42px;
-}
-
-.community > div {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-top: 22px;
-}
-
-.community article {
-  border: 1px solid var(--grid);
-  padding: 24px;
-}
-
-.community h3 {
-  font-size: 1.08rem;
-}
-
-.community article > span {
-  color: var(--ochre);
-  display: block;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.56rem;
-  letter-spacing: 0.07em;
-  margin-top: 9px;
-  text-transform: uppercase;
-}
-
-.community article > p {
-  color: rgba(36, 37, 34, 0.68);
-  font-size: 0.78rem;
-  line-height: 1.55;
-  margin: 14px 0 0;
-}
 
 .footer {
   background: var(--ink);
@@ -1272,14 +1214,6 @@ main {
     top: 30px;
   }
 
-  .screenshot-gallery {
-    grid-template-columns: 1fr;
-  }
-
-  .screenshot-main {
-    grid-column: auto;
-  }
-
   .project-copy h3 {
     font-size: 2.65rem;
   }
@@ -1321,8 +1255,7 @@ main {
     flex-direction: column;
   }
 
-  .training-grid,
-  .community > div {
+  .training-grid {
     grid-template-columns: 1fr;
   }
 

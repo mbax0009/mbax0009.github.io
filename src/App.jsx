@@ -40,7 +40,7 @@ const projects = [
     status: "Public / Downloadable",
     summary:
       "A household solar decision platform that turns electricity use, bills, budget, roof space, and backup needs into an explainable recommendation—or independently checks an installer quotation.",
-    technologies: ["Python", "Streamlit", "Energy modelling", "Financial analysis"],
+    technologies: ["Python", "Energy modelling", "Financial analysis", "Tariff analysis"],
     evidence: [
       "Pakistan tariff analysis with expected cost and post-solar bill estimates",
       "Solar, battery, and inverter sizing with backup assessment",
@@ -59,23 +59,11 @@ const projects = [
         icon: BookOpenText,
       },
     ],
-    screenshots: [
-      {
-        src: "/assets/projects/greeninvest-result.png",
-        alt: "GreenInvest Pakistan explainable household solar recommendation results",
-        caption: "Explainable solar recommendation",
-      },
-      {
-        src: "/assets/projects/greeninvest-inputs.png",
-        alt: "GreenInvest Pakistan household electricity and solar decision inputs",
-        caption: "Household inputs and usage profile",
-      },
-      {
-        src: "/assets/projects/greeninvest-battery.png",
-        alt: "GreenInvest Pakistan battery sizing and backup analysis",
-        caption: "Battery and backup analysis",
-      },
-    ],
+    image: {
+      src: "/assets/projects/greeninvest-solar.jpg",
+      alt: "A field of solar panels beneath a dramatic sky",
+      caption: "Solar energy decision modelling",
+    },
   },
   {
     id: "energy-simulator",
@@ -99,23 +87,11 @@ const projects = [
         icon: DownloadSimple,
       },
     ],
-    screenshots: [
-      {
-        src: "/assets/projects/energy-simulator-comparison.png",
-        alt: "Pakistan Energy Simulator comparison of solar, wind, and wave economics",
-        caption: "Solar, wind, and wave comparison",
-      },
-      {
-        src: "/assets/projects/energy-simulator-home.png",
-        alt: "Pakistan Energy Simulator project configuration and coordinate inputs",
-        caption: "Project configuration and coordinate inputs",
-      },
-      {
-        src: "/assets/projects/energy-simulator-wave.png",
-        alt: "Pakistan Energy Simulator wave energy competitiveness and break-even analysis",
-        caption: "Wave-energy competitiveness",
-      },
-    ],
+    image: {
+      src: "/assets/projects/energy-simulator-wind.jpg",
+      alt: "Wind turbines stretching across an open landscape at sunset",
+      caption: "Utility-scale renewable energy screening",
+    },
   },
 ];
 
@@ -282,29 +258,21 @@ function SectionTitle({ index, children }) {
   );
 }
 
-function ScreenshotGallery({ project, onOpen }) {
+function ProjectArtwork({ project, onOpen }) {
   return (
-    <div className="screenshot-gallery" aria-label={`${project.title} screenshots`}>
-      {project.screenshots.map((image, imageIndex) => (
-        <figure className={imageIndex === 0 ? "screenshot-main" : ""} key={image.src}>
-          <button
-            className="screenshot-button"
-            type="button"
-            onClick={() => onOpen({ ...image, project: project.title })}
-            aria-label={`Open full-size screenshot: ${image.caption}`}
-          >
-            <img src={image.src} alt={image.alt} />
-            <span className="zoom-label">
-              View interface <ArrowUpRight size={14} aria-hidden="true" />
-            </span>
-          </button>
-          <figcaption>
-            <span>{String(imageIndex + 1).padStart(2, "0")}</span>
-            {image.caption}
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+    <figure className="project-artwork">
+      <button
+        className="project-artwork-button"
+        type="button"
+        onClick={() => onOpen({ ...project.image, project: project.title })}
+        aria-label={`Open full-size project image: ${project.image.caption}`}
+      >
+        <img src={project.image.src} alt={project.image.alt} />
+        <span className="zoom-label">
+          View image <ArrowUpRight size={14} aria-hidden="true" />
+        </span>
+      </button>
+    </figure>
   );
 }
 
@@ -316,7 +284,7 @@ function Project({ project, reverse, onOpen }) {
           <span aria-hidden="true" />
           {project.status}
         </div>
-        <ScreenshotGallery project={project} onOpen={onOpen} />
+        <ProjectArtwork project={project} onOpen={onOpen} />
       </div>
       <div className="project-copy" data-reveal>
         <p className="eyebrow">
@@ -372,7 +340,7 @@ function Lightbox({ image, onClose }) {
   return (
     <div className="lightbox" role="dialog" aria-modal="true" aria-label={image.caption}>
       <button className="lightbox-backdrop" type="button" onClick={onClose}>
-        <span className="sr-only">Close screenshot</span>
+        <span className="sr-only">Close project image</span>
       </button>
       <div className="lightbox-panel">
         <div className="lightbox-header">
@@ -380,7 +348,7 @@ function Lightbox({ image, onClose }) {
             <span>{image.project}</span>
             <strong>{image.caption}</strong>
           </div>
-          <button type="button" onClick={onClose} aria-label="Close screenshot">
+          <button type="button" onClick={onClose} aria-label="Close project image">
             <X size={24} />
           </button>
         </div>
@@ -601,24 +569,6 @@ export function App() {
                 </p>
               </div>
             </aside>
-          </div>
-          <div className="community" data-reveal>
-            <p className="eyebrow">Community involvement</p>
-            <div>
-              <article>
-                <h3>Shaukat Khanum Memorial Cancer Hospital</h3>
-                <span>Fundraising volunteer</span>
-                <p>Participated in fundraising activities supporting cancer care.</p>
-              </article>
-              <article>
-                <h3>Karwan e Falah</h3>
-                <span>Administrative volunteer</span>
-                <p>
-                  Streamlined patient check-in and supported administrative
-                  coordination at an NGO medical camp.
-                </p>
-              </article>
-            </div>
           </div>
         </section>
       </main>
