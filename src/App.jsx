@@ -20,15 +20,15 @@ import {
 const links = {
   github: "https://github.com/mbax0009",
   linkedin: "https://www.linkedin.com/in/muhammad-bin-asad-8a5415350/",
-  greenInvest: "https://github.com/GreenInvest-Pakistan/GreenInvest-Pakistan",
+  greenInvest: "https://github.com/mbax0009/GreenInvest-Pakistan",
   greenInvestRelease:
-    "https://github.com/GreenInvest-Pakistan/GreenInvest-Pakistan/releases/latest",
+    "https://github.com/mbax0009/GreenInvest-Pakistan/releases/latest",
   greenInvestInstall:
-    "https://github.com/GreenInvest-Pakistan/GreenInvest-Pakistan#local-installation",
+    "https://github.com/mbax0009/GreenInvest-Pakistan#local-installation",
   energySimulator:
-    "https://github.com/GreenInvest-Pakistan/Pakistan-Energy-Simulator",
+    "https://github.com/mbax0009/Pakistan-Energy-Simulator",
   energySimulatorRelease:
-    "https://github.com/GreenInvest-Pakistan/Pakistan-Energy-Simulator/releases/latest",
+    "https://github.com/mbax0009/Pakistan-Energy-Simulator/releases/latest",
 };
 
 const projects = [
