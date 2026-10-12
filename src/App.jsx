@@ -2,601 +2,546 @@ import { useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
-  BookOpenText,
-  ChartLineUp,
-  Check,
-  DownloadSimple,
+  ArrowUp,
   GithubLogo,
-  HouseLine,
   LinkedinLogo,
-  List,
-  Medal,
-  Path,
-  Scales,
-  Trophy,
-  X,
+  DownloadSimple,
 } from "@phosphor-icons/react";
 
 const links = {
   github: "https://github.com/mbax0009",
   linkedin: "https://www.linkedin.com/in/muhammad-bin-asad-8a5415350/",
-  greenInvest: "https://github.com/mbax0009/GreenInvest-Pakistan",
-  greenInvestRelease:
-    "https://github.com/mbax0009/GreenInvest-Pakistan/releases/latest",
-  greenInvestInstall:
-    "https://github.com/mbax0009/GreenInvest-Pakistan#local-installation",
-  energySimulator:
-    "https://github.com/mbax0009/Pakistan-Energy-Simulator",
-  energySimulatorRelease:
-    "https://github.com/mbax0009/Pakistan-Energy-Simulator/releases/latest",
+  greeninvest: "https://github.com/mbax0009/GreenInvest-Pakistan",
+  simulator: "https://github.com/mbax0009/Pakistan-Energy-Simulator",
 };
 
 const projects = [
   {
     id: "greeninvest",
-    index: "01",
-    eyebrow: "Household solar decision modelling",
-    title: "GreenInvest Pakistan",
-    status: "Public / Downloadable",
-    summary:
-      "A household solar decision platform that turns electricity use, bills, budget, roof space, and backup needs into an explainable recommendation—or independently checks an installer quotation.",
-    technologies: ["Python", "Energy modelling", "Financial analysis", "Tariff analysis"],
-    evidence: [
-      "Pakistan tariff analysis with expected cost and post-solar bill estimates",
-      "Solar, battery, and inverter sizing with backup assessment",
-      "Confidence, alternatives, and visible modelling assumptions",
+    number: "01",
+    name: "GreenInvest Pakistan",
+    category: "Solar investment · Decision support",
+    question: "Solar sizing and investment analysis",
+    description:
+      "A calculator for residential, commercial and industrial solar decisions in Pakistan. It recommends solar, inverter and battery capacity using electricity consumption, bill targets, budget, roof space and backup requirements.",
+    image: "/assets/projects/greeninvest-solar.jpg",
+    alt: "Rows of solar panels under an expansive, cloud-filled sky",
+    caption: "Solar PV · System sizing · Investment analysis",
+    scope: "Residential, commercial & industrial",
+    analyses: [
+      [
+        "Sizing",
+        "Solar, inverter and battery sizing against demand, budget and physical constraints.",
+      ],
+      [
+        "Costs & bills",
+        "Seasonal generation, projected electricity bills and investment estimates.",
+      ],
+      [
+        "Quote checks",
+        "Checks proposed equipment and pricing against the user’s needs, with alternatives and sensitivity analysis.",
+      ],
     ],
-    actions: [
-      { label: "View repository", href: links.greenInvest, icon: GithubLogo },
-      {
-        label: "Latest release",
-        href: links.greenInvestRelease,
-        icon: DownloadSimple,
-      },
-      {
-        label: "Install guide",
-        href: links.greenInvestInstall,
-        icon: BookOpenText,
-      },
-    ],
-    image: {
-      src: "/assets/projects/greeninvest-solar.jpg",
-      alt: "A field of solar panels beneath a dramatic sky",
-      caption: "Solar energy decision modelling",
+    primary: {
+      label: "Open calculator",
+      href: "https://greeninvest-pakistan.vercel.app",
     },
+    repo: links.greeninvest,
+    download: links.greeninvest + "/releases/latest",
+    methodology: links.greeninvest + "#the-professional-verification-boundary",
+    note: "Independent screening, not a final system design or a guarantee of savings.",
   },
   {
     id: "energy-simulator",
-    index: "02",
-    eyebrow: "Utility-scale techno-economic screening",
-    title: "Pakistan Energy Simulator",
-    status: "Public / Windows 10–11 x64",
-    summary:
-      "A local-first quantitative screening environment for utility-scale solar PV, onshore wind, and research-grade wave energy across Pakistan.",
-    technologies: ["React", "FastAPI", "Python", "Scientific modelling"],
-    evidence: [
-      "Coordinate-based resource analysis with P90, P50, and P10 scenarios",
-      "NPV, IRR, LCOE, payback, sensitivity, and break-even assessment",
-      "Seeded Monte Carlo risk analysis with transparent sources and assumptions",
+    number: "02",
+    name: "Pakistan Energy Simulator",
+    category: "Renewable energy · Techno-economic analysis",
+    question: "Renewable-energy project analysis",
+    description:
+      "A desktop tool for analysing utility-scale solar PV, onshore wind and research-grade wave projects in Pakistan. It uses location-based resource data to estimate generation, project economics and uncertainty.",
+    image: "/assets/projects/energy-simulator-wind.jpg",
+    alt: "Wind turbines across an open field beneath the evening sky",
+    caption: "Solar · Wind · Wave · Project economics",
+    scope: "Solar PV, onshore wind & wave",
+    analyses: [
+      [
+        "Resource",
+        "Coordinate-based analysis with historical generation and P90 / P50 / P10 scenarios.",
+      ],
+      [
+        "Economics",
+        "NPV, IRR, LCOE and payback, with sensitivity and break-even assessment.",
+      ],
+      [
+        "Uncertainty",
+        "Reproducible Monte Carlo analysis and paired comparisons, with sources and limitations retained.",
+      ],
     ],
-    actions: [
-      { label: "View repository", href: links.energySimulator, icon: GithubLogo },
-      {
-        label: "Latest release",
-        href: links.energySimulatorRelease,
-        icon: DownloadSimple,
-      },
-    ],
-    image: {
-      src: "/assets/projects/energy-simulator-wind.jpg",
-      alt: "Wind turbines stretching across an open landscape at sunset",
-      caption: "Utility-scale renewable energy screening",
-    },
+    primary: { label: "View repository", href: links.simulator },
+    repo: links.simulator,
+    download: links.simulator + "/releases/latest",
+    methodology: links.simulator + "/blob/main/docs/METHODOLOGY.md",
+    note: "Decision support, not a bankability study. Wave energy remains research-grade.",
   },
 ];
 
-const methods = [
-  {
-    icon: Scales,
-    title: "Explain the verdict",
-    text: "Models should not be black boxes. I prioritise traceability: showing how each recommendation is derived from inputs, assumptions, and evidence.",
-  },
-  {
-    icon: ChartLineUp,
-    title: "Keep uncertainty visible",
-    text: "Scenario ranges and seeded Monte Carlo analysis help users understand risk as well as opportunity.",
-  },
-  {
-    icon: Path,
-    title: "Separate unlike decisions",
-    text: "Technical sizing logic is distinct from financial feasibility, so the tools evaluate engineering and economics independently.",
-  },
-  {
-    icon: HouseLine,
-    title: "Design for real constraints",
-    text: "Local tariff structures, resource limits, budgets, and practical requirements are built into every simulation.",
-  },
+const principles = [
+  [
+    "Decision scope",
+    "The model starts with a defined question: whether solar fits a property, which system meets its needs, or how a renewable-energy project compares financially.",
+  ],
+  [
+    "Inputs and assumptions",
+    "Resource data, system constraints and financial assumptions remain visible alongside the results.",
+  ],
+  [
+    "Uncertainty analysis",
+    "Scenarios, sensitivity tests and Monte Carlo analysis show how the results change when the inputs change.",
+  ],
 ];
 
-const capabilities = [
-  { label: "Energy models", value: "Solar / Wind / Wave resource analysis" },
-  { label: "Economics", value: "NPV / IRR / LCOE / Payback" },
-  { label: "Tariffs", value: "Bill analysis / financial constraints" },
-  { label: "Risk", value: "Monte Carlo / sensitivity / scenarios" },
-  { label: "Data", value: "Python / machine learning / analysis" },
-  { label: "Decisions", value: "Explainability / evidence / assumptions" },
+const skills = [
+  ["Energy modelling", "Solar PV · Wind · Wave · System sizing"],
+  ["Project economics", "NPV · IRR · LCOE · Payback"],
+  ["Risk & uncertainty", "Sensitivity · Scenarios · Monte Carlo"],
+  ["Data & analysis", "Python · Data analysis · ML fundamentals"],
 ];
 
-const education = [
-  {
-    school: "Westminster International Schools",
-    dates: "2025–2027",
-    detail: "A Levels — Mathematics, Physics & Chemistry",
-  },
-  {
-    school: "Benchmark School System",
-    dates: "2023–2025",
-    detail: "O Levels — 7 As (3 A*s, 4 As)",
-  },
-];
-
-const training = [
-  {
-    type: "Bootcamp",
-    institution: "NUST × Atomcamp",
-    detail:
-      "Programming, Python, Machine Learning, Data Analysis & AI — two-month on-site bootcamp",
-  },
-  {
-    type: "Leadership",
-    institution: "Innovista",
-    detail:
-      "Leadership, Entrepreneurship, Marketing & Applied AI — one-month on-site program",
-  },
-  {
-    type: "Design",
-    institution: "NUST",
-    detail: "Graphic Design — one-month on-site course",
-  },
-  {
-    type: "Robotics",
-    institution: "NUST × LearnObots",
-    detail: "Arduino Robotics — two-week on-site course",
-  },
-];
-
-function ExternalLink({ href, children, className = "", ariaLabel }) {
+function ExternalLink({ href, children, className = "", ...props }) {
   return (
     <a
-      className={className}
       href={href}
+      className={className}
       target="_blank"
-      rel="noreferrer"
-      aria-label={ariaLabel}
+      rel="noopener noreferrer"
+      {...props}
     >
       {children}
     </a>
   );
 }
 
-function Header({ activeSection, scrollProgress }) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const navItems = [
-    ["profile", "01 Profile"],
-    ["work", "02 Work"],
-    ["method", "03 Method"],
-    ["credentials", "04 Credentials"],
-  ];
+function SectionLabel({ number, children }) {
+  return (
+    <p className="section-label">
+      <span>{number}</span>
+      {children}
+    </p>
+  );
+}
 
+function Header() {
+  const [active, setActive] = useState("profile");
   useEffect(() => {
-    const close = () => setMenuOpen(false);
-    window.addEventListener("resize", close);
-    return () => window.removeEventListener("resize", close);
+    const sections = [...document.querySelectorAll("main > section[id]")];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (visible) setActive(visible.target.id);
+      },
+      { rootMargin: "-15% 0px -65% 0px" },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
-
   return (
     <header className="site-header">
-      <div
-        className="scroll-progress"
-        style={{ transform: `scaleX(${scrollProgress})` }}
-        aria-hidden="true"
-      />
-      <nav className="site-nav shell" aria-label="Primary navigation">
-        <a className="wordmark" href="#profile" aria-label="Muhammad Bin Asad, home">
-          Muhammad Bin Asad
+      <nav className="shell navigation" aria-label="Primary navigation">
+        <a
+          className="identity"
+          href="#profile"
+          aria-label="Muhammad Bin Asad, back to top"
+        >
+          Muhammad Bin Asad<span>Quantitative energy portfolio</span>
         </a>
-        <div className="desktop-nav">
-          {navItems.map(([id, label]) => (
+        <div className="nav-links">
+          {[
+            ["work", "Work"],
+            ["method", "Approach"],
+            ["credentials", "Background"],
+          ].map(([id, label]) => (
             <a
               key={id}
-              className={activeSection === id ? "active" : ""}
-              href={`#${id}`}
+              href={"#" + id}
+              aria-current={active === id ? "location" : undefined}
             >
               {label}
             </a>
           ))}
-        </div>
-        <div className="header-actions">
-          <ExternalLink href={links.github} ariaLabel="GitHub profile">
-            <GithubLogo size={20} weight="regular" aria-hidden="true" />
+          <ExternalLink href={links.linkedin} className="nav-contact">
+            Connect <ArrowUpRight size={15} aria-hidden="true" />
           </ExternalLink>
-          <ExternalLink href={links.linkedin} ariaLabel="LinkedIn profile">
-            <LinkedinLogo size={20} weight="regular" aria-hidden="true" />
-          </ExternalLink>
-          <button
-            className="menu-button"
-            type="button"
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
-            aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={22} /> : <List size={22} />}
-          </button>
-        </div>
-        <div
-          className={`mobile-nav ${menuOpen ? "open" : ""}`}
-          id="mobile-navigation"
-        >
-          {navItems.map(([id, label]) => (
-            <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
-              {label}
-            </a>
-          ))}
         </div>
       </nav>
     </header>
   );
 }
 
-function SectionTitle({ index, children }) {
+function Project({ project }) {
   return (
-    <div className="section-title" data-reveal>
-      <span aria-hidden="true">{index}</span>
-      <h2>{children}</h2>
-    </div>
-  );
-}
-
-function ProjectArtwork({ project, onOpen }) {
-  return (
-    <figure className="project-artwork">
-      <button
-        className="project-artwork-button"
-        type="button"
-        onClick={() => onOpen({ ...project.image, project: project.title })}
-        aria-label={`Open full-size project image: ${project.image.caption}`}
-      >
-        <img src={project.image.src} alt={project.image.alt} />
-        <span className="zoom-label">
-          View image <ArrowUpRight size={14} aria-hidden="true" />
+    <article
+      className="project"
+      id={project.id}
+      aria-labelledby={project.id + "-title"}
+    >
+      <div className="project-heading">
+        <span className="project-number" aria-hidden="true">
+          {project.number}
         </span>
-      </button>
-    </figure>
-  );
-}
-
-function Project({ project, reverse, onOpen }) {
-  return (
-    <article className={`project ${reverse ? "project-reverse" : ""}`} id={project.id}>
-      <div className="project-gallery" data-reveal>
-        <div className="status-badge">
+        <div>
+          <p className="eyebrow">{project.category}</p>
+          <h3 id={project.id + "-title"}>{project.name}</h3>
+        </div>
+        <span className="availability">
           <span aria-hidden="true" />
-          {project.status}
-        </div>
-        <ProjectArtwork project={project} onOpen={onOpen} />
+          Publicly available
+        </span>
       </div>
-      <div className="project-copy" data-reveal>
-        <p className="eyebrow">
-          {project.index} / {project.eyebrow}
-        </p>
-        <h3>{project.title}</h3>
-        <p className="project-summary">{project.summary}</p>
-        <div className="tags" aria-label="Project technologies">
-          {project.technologies.map((technology) => (
-            <span key={technology}>{technology}</span>
-          ))}
+      <div className="project-body">
+        <div className="project-visual">
+          <figure>
+            <img
+              src={project.image}
+              alt={project.alt}
+              width="2200"
+              height={project.number === "01" ? "1464" : "1467"}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              <span>{project.caption}</span>
+              <span aria-hidden="true">{project.number} / 02</span>
+            </figcaption>
+          </figure>
+          <div className="project-scope">
+            <span className="eyebrow">Scope</span>
+            <p>{project.scope}</p>
+          </div>
         </div>
-        <ul className="evidence-list">
-          {project.evidence.map((item) => (
-            <li key={item}>
-              <Check size={16} weight="bold" aria-hidden="true" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-        <div className="project-actions">
-          {project.actions.map(({ label, href, icon: Icon }, actionIndex) => (
+        <div className="project-copy">
+          <h4>{project.question}</h4>
+          <p className="project-description">{project.description}</p>
+          <dl className="analysis-list">
+            {project.analyses.map(([label, text]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{text}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="project-actions">
             <ExternalLink
-              href={href}
-              className={actionIndex === 0 ? "button button-primary" : "button"}
-              key={label}
+              className="button button-dark"
+              href={project.primary.href}
             >
-              {label}
-              <Icon size={17} aria-hidden="true" />
+              {project.primary.label}
+              <ArrowUpRight size={17} aria-hidden="true" />
             </ExternalLink>
-          ))}
+            <ExternalLink
+              className="text-link"
+              href={project.download}
+              aria-label={"Download " + project.name + " for Windows"}
+            >
+              Windows download
+              <DownloadSimple size={17} aria-hidden="true" />
+            </ExternalLink>
+          </div>
+          <div className="project-references">
+            {project.primary.href !== project.repo && (
+              <ExternalLink href={project.repo}>
+                Repository
+                <ArrowUpRight size={13} aria-hidden="true" />
+              </ExternalLink>
+            )}
+            <ExternalLink href={project.methodology}>
+              {project.number === "01" ? "Scope & limitations" : "Methodology"}
+              <ArrowUpRight size={13} aria-hidden="true" />
+            </ExternalLink>
+          </div>
+          <p className="project-note">{project.note}</p>
         </div>
       </div>
     </article>
   );
 }
 
-function Lightbox({ image, onClose }) {
-  useEffect(() => {
-    if (!image) return undefined;
-    const onKeyDown = (event) => {
-      if (event.key === "Escape") onClose();
-    };
-    document.body.classList.add("modal-open");
-    window.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.body.classList.remove("modal-open");
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [image, onClose]);
-
-  if (!image) return null;
-  return (
-    <div className="lightbox" role="dialog" aria-modal="true" aria-label={image.caption}>
-      <button className="lightbox-backdrop" type="button" onClick={onClose}>
-        <span className="sr-only">Close project image</span>
-      </button>
-      <div className="lightbox-panel">
-        <div className="lightbox-header">
-          <div>
-            <span>{image.project}</span>
-            <strong>{image.caption}</strong>
-          </div>
-          <button type="button" onClick={onClose} aria-label="Close project image">
-            <X size={24} />
-          </button>
-        </div>
-        <img src={image.src} alt={image.alt} />
-      </div>
-    </div>
-  );
-}
-
 export function App() {
-  const [activeSection, setActiveSection] = useState("profile");
-  const [lightboxImage, setLightboxImage] = useState(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const updateProgress = () => {
-      const scrollable =
-        document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      setScrollProgress(scrollable > 0 ? window.scrollY / scrollable : 0);
-    };
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
-    return () => {
-      window.removeEventListener("scroll", updateProgress);
-      window.removeEventListener("resize", updateProgress);
-    };
-  }, []);
-
-  useEffect(() => {
-    const sections = ["profile", "work", "method", "credentials"]
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveSection(visible.target.id);
-      },
-      { rootMargin: "-25% 0px -60% 0px", threshold: [0, 0.2, 0.5] },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const elements = document.querySelectorAll("[data-reveal]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08 },
-    );
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
-      <a className="skip-link" href="#main-content">
+      <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      <Header activeSection={activeSection} scrollProgress={scrollProgress} />
-      <main id="main-content">
-        <section className="hero shell bordered" id="profile">
-          <div className="hero-content">
-            <p className="eyebrow hero-name" data-reveal>
-              Muhammad Bin Asad
-            </p>
-            <h1 data-reveal>
-              Student entrepreneur building explainable energy decision tools for
-              Pakistan.
-            </h1>
-            <p className="hero-intro" data-reveal>
-              Translating complex energy, tariff, resource, and financial models
-              into understandable decisions for Pakistan’s energy transition.
-            </p>
-            <div className="hero-actions" data-reveal>
-              <a className="button button-primary" href="#work">
-                Explore projects <ArrowDown size={17} aria-hidden="true" />
+      <Header />
+      <main id="main-content" tabIndex={-1}>
+        <section
+          className="hero shell"
+          id="profile"
+          aria-labelledby="hero-title"
+        >
+          <div className="hero-topline">
+            <span className="eyebrow">Independent work · Pakistan</span>
+            <span className="eyebrow">Solar investment & renewable energy</span>
+          </div>
+          <div className="hero-grid">
+            <div className="hero-title-wrap">
+              <h1 id="hero-title">
+                Energy modelling
+                <br />
+                for Pakistan.
+              </h1>
+              <a className="hero-link" href="#work">
+                View projects
+                <span>
+                  <ArrowDown size={20} aria-hidden="true" />
+                </span>
               </a>
-              <ExternalLink className="button" href={links.github}>
-                GitHub profile <GithubLogo size={17} aria-hidden="true" />
-              </ExternalLink>
+            </div>
+            <div className="hero-intro">
+              <p>
+                I’m Muhammad Bin Asad. I study Mathematics, Physics and
+                Chemistry at A Level and develop energy modelling projects
+                focused on Pakistan.
+              </p>
+              <p>
+                My work focuses on system sizing, project economics and
+                uncertainty analysis. The two projects below are available to
+                use and download.
+              </p>
             </div>
           </div>
-          <aside className="hero-grid" aria-label="Portfolio focus">
-            <div className="technical-rail">
-              <span>Model layer</span>
-              <strong>Energy × Economics</strong>
-            </div>
-            <div className="technical-rail technical-rail-middle">
-              <span>Working scale</span>
-              <strong>Household → Utility</strong>
-            </div>
-            <div className="technical-rail-note">
-              <span>Pakistan-specific assumptions</span>
-              <p>Transparent models. Decision-grade outputs.</p>
-              <ArrowDown size={18} aria-hidden="true" />
-            </div>
-          </aside>
-        </section>
-
-        <section className="proof shell bordered" aria-label="Portfolio overview">
-          <div>
-            <span>Project count</span>
-            <strong>02</strong>
-            <small>Flagship platforms</small>
-          </div>
-          <div>
-            <span>Coverage</span>
-            <strong>03</strong>
-            <small>Renewable technologies</small>
-          </div>
-          <div>
-            <span>Scalability</span>
-            <strong className="proof-words">Household → Utility</strong>
-            <small>Full spectrum</small>
-          </div>
-          <div>
-            <span>Context</span>
-            <strong className="proof-words">Pakistan</strong>
-            <small>Decision models</small>
-          </div>
-        </section>
-
-        <section className="work shell bordered" id="work">
-          <SectionTitle index="02">Featured Work</SectionTitle>
-          <div className="project-stack">
-            {projects.map((project, index) => (
-              <Project
-                key={project.id}
-                project={project}
-                reverse={index % 2 === 1}
-                onOpen={setLightboxImage}
-              />
+          <div
+            className="project-index"
+            aria-label="Selected project shortcuts"
+          >
+            <span className="eyebrow index-label">Selected projects</span>
+            {projects.map((project) => (
+              <a href={"#" + project.id} key={project.id}>
+                <span className="index-number">{project.number}</span>
+                <span className="index-copy">
+                  <strong>{project.name}</strong>
+                  <span>
+                    {project.number === "01"
+                      ? "Solar investment decisions"
+                      : "Utility-scale analysis"}
+                  </span>
+                </span>
+                <ArrowDown size={16} aria-hidden="true" />
+              </a>
             ))}
           </div>
         </section>
 
-        <section className="method shell bordered" id="method">
-          <SectionTitle index="03">Core Philosophy</SectionTitle>
-          <div className="method-grid">
-            {methods.map(({ icon: Icon, title, text }, index) => (
-              <article data-reveal key={title}>
-                <div className={`method-icon method-icon-${index + 1}`}>
-                  <Icon size={19} weight="bold" aria-hidden="true" />
-                </div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
-            ))}
+        <section
+          className="work shell section-space"
+          id="work"
+          aria-labelledby="work-title"
+        >
+          <div className="section-heading">
+            <div>
+              <SectionLabel number="01">Work</SectionLabel>
+              <h2 id="work-title">Selected projects</h2>
+            </div>
+            <p>
+              Solar investment decisions and utility-scale renewable energy
+              analysis. Public downloads and documentation for both projects.
+            </p>
           </div>
-          <div className="capabilities" data-reveal>
-            <p className="eyebrow">Quantitative capabilities</p>
-            <div className="capability-grid">
-              {capabilities.map((item) => (
-                <div key={item.label}>
-                  <span>{item.label}</span>
-                  <strong>{item.value}</strong>
-                </div>
+          {projects.map((project) => (
+            <Project key={project.id} project={project} />
+          ))}
+        </section>
+
+        <section className="method" id="method" aria-labelledby="method-title">
+          <div className="shell method-inner">
+            <div className="method-intro">
+              <SectionLabel number="02">Approach</SectionLabel>
+              <h2 id="method-title">
+                Modelling
+                <br />
+                approach
+              </h2>
+              <p>
+                The projects combine energy estimates with financial analysis.
+                Results support screening and comparison, not final engineering
+                design.
+              </p>
+            </div>
+            <div className="principles">
+              {principles.map(([title, description], i) => (
+                <article key={title}>
+                  <span className="principle-number">0{i + 1}</span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </div>
+                </article>
               ))}
             </div>
+            <div className="capabilities">
+              <p className="eyebrow">Skills</p>
+              <dl>
+                {skills.map(([label, value]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </section>
 
-        <section className="credentials shell bordered" id="credentials">
-          <SectionTitle index="04">Credentials</SectionTitle>
-          <div className="credentials-grid">
-            <div className="credentials-main">
-              <div className="credential-group">
-                <p className="eyebrow">Academic</p>
-                {education.map((item) => (
-                  <article className="education-row" data-reveal key={item.school}>
-                    <div>
-                      <h3>{item.school}</h3>
-                      <p>{item.detail}</p>
-                    </div>
-                    <span>{item.dates}</span>
-                  </article>
-                ))}
-              </div>
-              <div className="credential-group">
-                <p className="eyebrow">Selected training & courses</p>
-                <div className="training-grid">
-                  {training.map((item) => (
-                    <article data-reveal key={item.institution + item.type}>
-                      <span>{item.type}</span>
-                      <h3>{item.institution}</h3>
-                      <p>{item.detail}</p>
-                    </article>
-                  ))}
-                </div>
-              </div>
+        <section
+          className="background shell section-space"
+          id="credentials"
+          aria-labelledby="background-title"
+        >
+          <div className="section-heading background-heading">
+            <div>
+              <SectionLabel number="03">Background</SectionLabel>
+              <h2 id="background-title">Education & experience</h2>
             </div>
-            <aside className="distinctions" data-reveal>
-              <p className="eyebrow">Awards & distinctions</p>
-              <div>
-                <Trophy size={21} weight="regular" aria-hidden="true" />
-                <p>
-                  <strong>Honorable Mention</strong>
-                  <span>
-                    Great Future Pakistan National Science Olympiad — Mathematics
-                  </span>
+          </div>
+          <div className="background-row experience">
+            <h3 className="group-title">Experience</h3>
+            <div className="experience-content">
+              <div className="entry-heading">
+                <div>
+                  <h4>Innovista</h4>
+                  <p className="entry-role">
+                    Intern · Leadership & professional development
+                  </p>
+                </div>
+                <p className="entry-meta">
+                  Summer 2026 · 2 months
+                  <span className="meta-location">On-site</span>
                 </p>
               </div>
-              <div>
-                <Medal size={21} weight="regular" aria-hidden="true" />
+              <p className="experience-summary">
+                An internship focused on entrepreneurship, digital marketing, AI
+                automation and AI-assisted software development.
+              </p>
+              <ul className="experience-list">
+                <li>
+                  Explored AI tools and automation workflows for practical
+                  applications.
+                </li>
+                <li>
+                  Worked with AI-assisted software development and digital
+                  content creation.
+                </li>
+                <li>
+                  Developed an understanding of advertising, marketing strategy
+                  and operations.
+                </li>
+                <li>
+                  Strengthened professional communication, presentation and
+                  entrepreneurial skills.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="background-row">
+            <h3 className="group-title">Education</h3>
+            <div className="entries">
+              <article className="education-entry">
+                <div>
+                  <h4>Westminster International Schools</h4>
+                  <p>A Levels · Mathematics, Physics & Chemistry</p>
+                </div>
+                <span className="entry-meta">2025–2027</span>
+              </article>
+              <article className="education-entry">
+                <div>
+                  <h4>Benchmark School System</h4>
+                  <p>O Levels · 7 As (3 A*, 4 As)</p>
+                </div>
+                <span className="entry-meta">2023–2025</span>
+              </article>
+            </div>
+          </div>
+          <div className="background-row">
+            <h3 className="group-title">Selected training</h3>
+            <div className="training-list">
+              <article>
+                <div className="entry-heading">
+                  <h4>NUST × Atomcamp</h4>
+                  <span className="entry-meta">2 months · On-site</span>
+                </div>
                 <p>
-                  <strong>Silver Medal / Charles Dickens Distinction</strong>
-                  <span>IKLC 2024</span>
+                  Python, programming, machine learning, data analysis and AI
+                  fundamentals.
                 </p>
-              </div>
-            </aside>
+              </article>
+              <article>
+                <div className="entry-heading">
+                  <h4>NUST</h4>
+                  <span className="entry-meta">2 weeks · On-site</span>
+                </div>
+                <p>
+                  Graphic design tools and software, including Adobe Photoshop.
+                </p>
+              </article>
+              <article>
+                <div className="entry-heading">
+                  <h4>NUST × LearnObots</h4>
+                  <span className="entry-meta">2 weeks · On-site</span>
+                </div>
+                <p>
+                  Robotics hardware and programming, including Arduino-based
+                  projects.
+                </p>
+              </article>
+            </div>
+          </div>
+          <div className="background-row distinctions">
+            <h3 className="group-title">Distinctions</h3>
+            <ul>
+              <li>
+                <span>Honorable Mention · Mathematics</span>
+                <p>Great Future Pakistan National Science Olympiad</p>
+              </li>
+              <li>
+                <span>Silver Medal / Charles Dickens Distinction Award</span>
+                <p>International Kangaroo Linguistic Contest · 2024</p>
+              </li>
+            </ul>
           </div>
         </section>
       </main>
-
-      <footer className="footer shell bordered">
-        <div>
-          <h2>Building useful, transparent energy tools for Pakistan.</h2>
-          <div className="footer-bottom">
+      <footer className="footer">
+        <div className="shell">
+          <div className="footer-top">
             <div>
-              <p className="eyebrow">Get in touch</p>
-              <div className="social-links">
-                <ExternalLink href={links.github}>
-                  <GithubLogo size={18} aria-hidden="true" /> GitHub
-                </ExternalLink>
-                <ExternalLink href={links.linkedin}>
-                  <LinkedinLogo size={18} aria-hidden="true" /> LinkedIn
-                </ExternalLink>
-              </div>
+              <p className="eyebrow">Contact</p>
+              <h2>Get in touch</h2>
+              <p className="footer-description">
+                For questions about my work or feedback on the projects.
+              </p>
             </div>
-            <div className="footer-identity">
-              <strong>Muhammad Bin Asad</strong>
-              <span>mbax0009.github.io</span>
+            <div className="footer-links">
+              <ExternalLink href={links.linkedin}>
+                <LinkedinLogo size={21} aria-hidden="true" />
+                Connect on LinkedIn
+                <ArrowUpRight size={21} aria-hidden="true" />
+              </ExternalLink>
+              <ExternalLink href={links.github}>
+                <GithubLogo size={21} aria-hidden="true" />
+                View GitHub
+                <ArrowUpRight size={21} aria-hidden="true" />
+              </ExternalLink>
             </div>
+          </div>
+          <div className="footer-bottom">
+            <span>Muhammad Bin Asad</span>
+            <a href="https://mbax0009.github.io/">mbax0009.github.io</a>
+            <a href="#profile">
+              Back to top
+              <ArrowUp size={15} aria-hidden="true" />
+            </a>
           </div>
         </div>
       </footer>
-
-      <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />
     </>
   );
 }

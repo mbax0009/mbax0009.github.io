@@ -5,3 +5,4 @@ AGENTS.md
 design-qa.md
 .DS_Store
 *.log
+.qa/
