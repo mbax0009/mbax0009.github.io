@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { usePortfolioMotion } from "./usePortfolioMotion.js";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -20,64 +21,66 @@ const projects = [
     id: "greeninvest",
     number: "01",
     name: "GreenInvest Pakistan",
-    category: "Solar investment · Decision support",
-    question: "Solar sizing and investment analysis",
+    category: "Residential, commercial & industrial",
+    question: "Should you install solar—and what should you install?",
     description:
-      "A calculator for residential, commercial and industrial solar decisions in Pakistan. It recommends solar, inverter and battery capacity using electricity consumption, bill targets, budget, roof space and backup requirements.",
+      "GreenInvest brings system sizing, electricity-bill modelling and financial analysis into a single solar investment assessment. It works from a property’s electricity use, budget, roof space and backup requirements to recommend a suitable configuration—or explain why installation may not make sense.",
     image: "/assets/projects/greeninvest-solar.jpg",
     alt: "Rows of solar panels under an expansive, cloud-filled sky",
-    caption: "Solar PV · System sizing · Investment analysis",
-    scope: "Residential, commercial & industrial",
+    scope: "Start with your electricity use, or bring an installer’s quotation.",
+    detail: "The two pathways let users explore a new investment or independently assess a proposal already on the table. Both produce a decision with the assumptions, constraints and alternatives available for review.",
     analyses: [
       [
-        "Sizing",
-        "Solar, inverter and battery sizing against demand, budget and physical constraints.",
+        "System sizing & backup",
+        "Compares solar, inverter and battery configurations against demand, roof area and budget. Backup checks account for protected loads, outage duration and storage capacity.",
       ],
       [
-        "Costs & bills",
-        "Seasonal generation, projected electricity bills and investment estimates.",
+        "Bills & investment",
+        "Models seasonal generation and monthly electricity bills using Pakistan-specific tariff categories. Equipment pricing, remaining grid charges and financial estimates help compare the proposed investment with alternatives.",
       ],
       [
-        "Quote checks",
-        "Checks proposed equipment and pricing against the user’s needs, with alternatives and sensitivity analysis.",
+        "Independent quotation checks",
+        "Assesses proposed equipment, capacity and pricing against the user’s consumption, bill target and backup needs—not just the headline size of the system.",
       ],
+      ["Risk & evidence", "Sensitivity analysis and on-demand Monte Carlo simulations test how assumptions affect the result. Reports, configuration data and CSV exports let users examine the recommendation outside the app."],
     ],
     primary: {
-      label: "Open calculator",
+      label: "Try GreenInvest",
       href: "https://greeninvest-pakistan.vercel.app",
     },
     repo: links.greeninvest,
     download: links.greeninvest + "/releases/latest",
-    methodology: links.greeninvest + "#the-professional-verification-boundary",
+    methodology: links.greeninvest + "#readme",
     note: "Independent screening, not a final system design or a guarantee of savings.",
   },
   {
     id: "energy-simulator",
     number: "02",
     name: "Pakistan Energy Simulator",
-    category: "Renewable energy · Techno-economic analysis",
-    question: "Renewable-energy project analysis",
+    category: "Utility-scale solar, wind & wave",
+    question: "From a site’s energy resource to a project’s economics.",
     description:
-      "A desktop tool for analysing utility-scale solar PV, onshore wind and research-grade wave projects in Pakistan. It uses location-based resource data to estimate generation, project economics and uncertainty.",
+      "Pakistan Energy Simulator connects historical resource data, physical generation models and project finance. It evaluates utility-scale solar PV, onshore wind and research-grade wave energy at locations across Pakistan, carrying the uncertainty in energy production through to the investment analysis.",
     image: "/assets/projects/energy-simulator-wind.jpg",
     alt: "Wind turbines across an open field beneath the evening sky",
-    caption: "Solar · Wind · Wave · Project economics",
-    scope: "Solar PV, onshore wind & wave",
+    scope: "Compare technologies under the same assumptions.",
+    detail: "Paired uncertainty analysis compares projects within the same simulated conditions. Wave-energy screening also tests capital cost and conversion efficiency against a solar benchmark, including where no competitive case is found.",
     analyses: [
       [
-        "Resource",
-        "Coordinate-based analysis with historical generation and P90 / P50 / P10 scenarios.",
+        "Resource & physical models",
+        "Uses coordinates and historical hourly weather or marine data. Solar temperature and losses, wind hub height and turbine power curves, and wave flux and capture width are modelled explicitly.",
       ],
       [
-        "Economics",
-        "NPV, IRR, LCOE and payback, with sensitivity and break-even assessment.",
+        "Generation & project finance",
+        "Estimates P90, P50 and P10 generation scenarios, net present value, project IRR, levelised cost of energy, and simple and discounted payback.",
       ],
       [
-        "Uncertainty",
-        "Reproducible Monte Carlo analysis and paired comparisons, with sources and limitations retained.",
+        "Sensitivity & uncertainty",
+        "One- and two-way sensitivity tests, break-even root finding and reproducible Monte Carlo simulations show which assumptions change a project’s economics—and by how much.",
       ],
+      ["Traceable results", "Source records, dated financial assumptions, model limitations and evidence-pack exports accompany the results. The methodology is published alongside the application."],
     ],
-    primary: { label: "View repository", href: links.simulator },
+    primary: { label: "Public repository", href: links.simulator },
     repo: links.simulator,
     download: links.simulator + "/releases/latest",
     methodology: links.simulator + "/blob/main/docs/METHODOLOGY.md",
@@ -132,31 +135,40 @@ function SectionLabel({ number, children }) {
 
 function Header() {
   const [active, setActive] = useState("profile");
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const sections = [...document.querySelectorAll("main > section[id]")];
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible) setActive(visible.target.id);
-      },
-      { rootMargin: "-15% 0px -65% 0px" },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const readingLine = document.querySelector("header").getBoundingClientRect().bottom + 80;
+      const current = sections.findLast(section => section.getBoundingClientRect().top <= readingLine);
+      setActive(current?.id || "profile");
+      setScrolled(window.scrollY > 16);
+    };
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      cancelAnimationFrame(frame);
+    };
   }, []);
   return (
-    <header className="site-header">
+    <header className="site-header" data-scrolled={scrolled}>
       <nav className="shell navigation" aria-label="Primary navigation">
         <a
           className="identity"
           href="#profile"
           aria-label="Muhammad Bin Asad, back to top"
         >
-          Muhammad Bin Asad<span>Quantitative energy portfolio</span>
+          Muhammad Bin Asad
         </a>
         <div className="nav-links">
           {[
-            ["work", "Work"],
+            ["work", "Projects"],
             ["method", "Approach"],
             ["credentials", "Background"],
           ].map(([id, label]) => (
@@ -168,9 +180,10 @@ function Header() {
               {label}
             </a>
           ))}
-          <ExternalLink href={links.linkedin} className="nav-contact">
-            Connect <ArrowUpRight size={15} aria-hidden="true" />
-          </ExternalLink>
+        </div>
+        <div className="header-socials">
+          <ExternalLink href={links.linkedin}><LinkedinLogo size={19} aria-hidden="true" />LinkedIn<ArrowUpRight size={15} aria-hidden="true" /></ExternalLink>
+          <ExternalLink href={links.github}><GithubLogo size={19} aria-hidden="true" />GitHub<ArrowUpRight size={15} aria-hidden="true" /></ExternalLink>
         </div>
       </nav>
     </header>
@@ -185,19 +198,17 @@ function Project({ project }) {
       aria-labelledby={project.id + "-title"}
     >
       <div className="project-heading">
-        <span className="project-number" aria-hidden="true">
-          {project.number}
-        </span>
         <div>
-          <p className="eyebrow">{project.category}</p>
+          <p className="project-category">{project.category}</p>
           <h3 id={project.id + "-title"}>{project.name}</h3>
         </div>
-        <span className="availability">
-          <span aria-hidden="true" />
-          Publicly available
-        </span>
+        <span className="project-number" aria-hidden="true">{project.number}</span>
       </div>
       <div className="project-body">
+        <div className="project-overview">
+          <h4>{project.question}</h4>
+          <p className="project-description">{project.description}</p>
+        </div>
         <div className="project-visual">
           <figure>
             <img
@@ -208,19 +219,17 @@ function Project({ project }) {
               loading="lazy"
               decoding="async"
             />
-            <figcaption>
-              <span>{project.caption}</span>
-              <span aria-hidden="true">{project.number} / 02</span>
-            </figcaption>
           </figure>
           <div className="project-scope">
-            <span className="eyebrow">Scope</span>
-            <p>{project.scope}</p>
+            <h4>{project.scope}</h4>
+            <p>{project.detail}</p>
+            <ExternalLink href={project.methodology} className="text-link">
+              {project.number === "01" ? "Read the project documentation" : "Explore the methodology"}
+              <ArrowUpRight size={17} aria-hidden="true" />
+            </ExternalLink>
           </div>
         </div>
         <div className="project-copy">
-          <h4>{project.question}</h4>
-          <p className="project-description">{project.description}</p>
           <dl className="analysis-list">
             {project.analyses.map(([label, text]) => (
               <div key={label}>
@@ -238,25 +247,19 @@ function Project({ project }) {
               <ArrowUpRight size={17} aria-hidden="true" />
             </ExternalLink>
             <ExternalLink
-              className="text-link"
+              className="button button-outline download-link"
               href={project.download}
               aria-label={"Download " + project.name + " for Windows"}
             >
               Windows download
               <DownloadSimple size={17} aria-hidden="true" />
             </ExternalLink>
-          </div>
-          <div className="project-references">
             {project.primary.href !== project.repo && (
-              <ExternalLink href={project.repo}>
-                Repository
-                <ArrowUpRight size={13} aria-hidden="true" />
+              <ExternalLink className="text-link repository-link" href={project.repo}>
+                Public repository
+                <ArrowUpRight size={17} aria-hidden="true" />
               </ExternalLink>
             )}
-            <ExternalLink href={project.methodology}>
-              {project.number === "01" ? "Scope & limitations" : "Methodology"}
-              <ArrowUpRight size={13} aria-hidden="true" />
-            </ExternalLink>
           </div>
           <p className="project-note">{project.note}</p>
         </div>
@@ -266,6 +269,7 @@ function Project({ project }) {
 }
 
 export function App() {
+  usePortfolioMotion();
   return (
     <>
       <a href="#main-content" className="skip-link">
@@ -278,56 +282,30 @@ export function App() {
           id="profile"
           aria-labelledby="hero-title"
         >
-          <div className="hero-topline">
-            <span className="eyebrow">Independent work · Pakistan</span>
-            <span className="eyebrow">Solar investment & renewable energy</span>
-          </div>
+          <p className="hero-topline">Mathematics. Energy. Investment.</p>
           <div className="hero-grid">
             <div className="hero-title-wrap">
               <h1 id="hero-title">
-                Energy modelling
-                <br />
-                for Pakistan.
+                Energy modelling.<br />
+                <span>Investment analysis.</span>
               </h1>
-              <a className="hero-link" href="#work">
-                View projects
-                <span>
-                  <ArrowDown size={20} aria-hidden="true" />
-                </span>
-              </a>
             </div>
             <div className="hero-intro">
               <p>
-                I’m Muhammad Bin Asad. I study Mathematics, Physics and
-                Chemistry at A Level and develop energy modelling projects
-                focused on Pakistan.
+                I’m Muhammad Bin Asad. I develop quantitative models for
+                energy decisions in Pakistan—from choosing a solar system
+                to evaluating a renewable-energy project.
               </p>
-              <p>
-                My work focuses on system sizing, project economics and
-                uncertainty analysis. The two projects below are available to
-                use and download.
-              </p>
+              <div className="hero-actions">
+                <a className="button button-dark" href="#work">Explore my work<ArrowDown size={19} aria-hidden="true" /></a>
+                <ExternalLink className="button button-outline hero-social" href={links.linkedin}>
+                  <LinkedinLogo size={20} aria-hidden="true" />LinkedIn
+                </ExternalLink>
+                <ExternalLink className="button button-outline hero-social" href={links.github}>
+                  <GithubLogo size={20} aria-hidden="true" />GitHub
+                </ExternalLink>
+              </div>
             </div>
-          </div>
-          <div
-            className="project-index"
-            aria-label="Selected project shortcuts"
-          >
-            <span className="eyebrow index-label">Selected projects</span>
-            {projects.map((project) => (
-              <a href={"#" + project.id} key={project.id}>
-                <span className="index-number">{project.number}</span>
-                <span className="index-copy">
-                  <strong>{project.name}</strong>
-                  <span>
-                    {project.number === "01"
-                      ? "Solar investment decisions"
-                      : "Utility-scale analysis"}
-                  </span>
-                </span>
-                <ArrowDown size={16} aria-hidden="true" />
-              </a>
-            ))}
           </div>
         </section>
 
@@ -338,12 +316,11 @@ export function App() {
         >
           <div className="section-heading">
             <div>
-              <SectionLabel number="01">Work</SectionLabel>
               <h2 id="work-title">Selected projects</h2>
             </div>
             <p>
-              Solar investment decisions and utility-scale renewable energy
-              analysis. Public downloads and documentation for both projects.
+              Both projects are publicly available.<br />
+              Explore the models, read the methods, or try them yourself.
             </p>
           </div>
           {projects.map((project) => (
@@ -354,11 +331,9 @@ export function App() {
         <section className="method" id="method" aria-labelledby="method-title">
           <div className="shell method-inner">
             <div className="method-intro">
-              <SectionLabel number="02">Approach</SectionLabel>
+              <SectionLabel number="">How I work</SectionLabel>
               <h2 id="method-title">
-                Modelling
-                <br />
-                approach
+                Modelling<br />approach
               </h2>
               <p>
                 The projects combine energy estimates with financial analysis.
@@ -398,7 +373,7 @@ export function App() {
         >
           <div className="section-heading background-heading">
             <div>
-              <SectionLabel number="03">Background</SectionLabel>
+              <SectionLabel number="">Background</SectionLabel>
               <h2 id="background-title">Education & experience</h2>
             </div>
           </div>
